@@ -1,0 +1,962 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Anugrah Las Banjar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout concept: tiga tampilan (Beranda, Menu Layanan, Order) dalam satu situs, dibuka lewat tab di header.
+   Beranda dibuka dengan panel baja gelap berisi detail kuda-kuda dan titik las yang menyala. */
+:root {
+  --bg: #EDF0F2;
+  --surface: #FFFFFF;
+  --surface2: #E2E8EC;
+  --ink: #0F1B24;
+  --muted: #475862;
+  --line: #C8D1D7;
+  --bar: #F6F8F9;
+  --accent: #C94A08;
+  --on-accent: #FFFFFF;
+  --spark: #FF8A2B;
+  --steel: #1F4560;
+  --hero-bg: #12293A;
+  --hero-fg: #F2F6F8;
+  --hero-mut: #B7C7D1;
+  --hero-line: #5E7E93;
+  --hero-steel: #D3DEE5;
+  --font-display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D161D; --surface: #14212A; --surface2: #1B2C37; --ink: #EAF0F3; --muted: #A5B4BE;
+    --line: #2B3E4B; --bar: #101C24; --accent: #FF7A2E; --on-accent: #1A0D05; --spark: #FFB066;
+    --steel: #8FB4CC; --hero-bg: #091219;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D161D; --surface: #14212A; --surface2: #1B2C37; --ink: #EAF0F3; --muted: #A5B4BE;
+  --line: #2B3E4B; --bar: #101C24; --accent: #FF7A2E; --on-accent: #1A0D05; --spark: #FFB066;
+  --steel: #8FB4CC; --hero-bg: #091219;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bar); }
+h1, h2, h3, h4, p { margin: 0; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-wrap: balance; line-height: 1.02; letter-spacing: .005em; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); text-transform: uppercase; }
+h3 { font-size: 1.5rem; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.wrap {
+  width: 100%; max-width: 1180px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.mono { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; }
+.eyebrow { color: var(--accent); }
+.lead { font-size: 1.125rem; color: var(--muted); max-width: 62ch; }
+.section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+.section-head { display: grid; gap: .9rem; margin-bottom: clamp(1.8rem, 4vw, 3rem); max-width: 46rem; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+  min-height: 3rem; padding: .7rem 1.4rem; border-radius: 6px; border: 2px solid transparent;
+  font-weight: 600; text-decoration: none; cursor: pointer; line-height: 1.2; text-align: center;
+  transition: transform .15s ease, background-color .15s ease;
+}
+.btn svg { width: 1.25rem; height: 1.25rem; flex: none; }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-ghost { border-color: currentColor; background: transparent; }
+.btn-ghost:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+.btn-line { border-color: var(--line); background: var(--surface); }
+.btn-line:hover { border-color: var(--accent); }
+.btn-sm { min-height: 2.5rem; padding: .45rem 1rem; font-size: .9rem; }
+
+/* Header */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); border-bottom: 1px solid var(--line); }
+.bar-in { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .5rem 1rem; padding-block: .6rem; }
+.brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; min-width: 0; }
+.brand .logo { width: 2.75rem; height: 2.75rem; flex: none; border-radius: 50%; display: block; }
+.brand b { display: block; font-family: var(--font-display); font-size: 1.55rem; line-height: 1; text-transform: uppercase; letter-spacing: .03em; }
+.brand small { display: block; font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.tabs { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: repeat(4, 1fr); gap: .1rem; }
+.tabs a {
+  text-align: center; padding: .55rem .2rem; text-decoration: none; font-weight: 600; font-size: .84rem;
+  border-bottom: 3px solid transparent; color: var(--muted);
+}
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.bar .btn { grid-column: 2; grid-row: 1; }
+.bar .btn .long { display: none; }
+@media (min-width: 820px) {
+  .bar-in { grid-template-columns: auto 1fr auto; }
+  .tabs { grid-column: 2; grid-row: 1; justify-self: center; display: flex; gap: 1.6rem; }
+  .tabs a { padding-inline: .3rem; font-size: .95rem; }
+  .bar .btn { grid-column: 3; }
+  .bar .btn .long { display: inline; }
+  .bar .btn .short { display: none; }
+}
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-fg); position: relative; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 80% 44%, color-mix(in srgb, var(--spark) 26%, transparent), transparent 52%);
+}
+.hero-in { position: relative; display: grid; gap: 2.5rem; padding-block: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+@media (min-width: 900px) { .hero-in { grid-template-columns: 1.08fr .92fr; } }
+.hero h1 { font-size: clamp(2.9rem, 8vw, 5.4rem); text-transform: uppercase; line-height: .93; }
+.hero h1 em { font-style: normal; color: var(--spark); }
+.hero .eyebrow { color: var(--spark); }
+.hero .lead { color: var(--hero-mut); margin-top: 1.3rem; }
+.hero-text { display: grid; gap: 1.2rem; min-width: 0; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: .6rem; }
+.hero .btn-primary { background: var(--spark); color: #1A0D05; }
+.hero-art { min-width: 0; }
+.hero-art svg { width: 100%; height: auto; max-height: 28rem; display: block; margin-inline: auto; }
+.ground { stroke: var(--hero-line); stroke-width: 2; }
+.col { fill: var(--hero-line); }
+.chord { fill: none; stroke: var(--hero-steel); stroke-width: 7; stroke-linejoin: round; }
+.web { stroke: var(--hero-steel); stroke-width: 4; stroke-linecap: round; opacity: .85; }
+.node { fill: var(--hero-bg); stroke: var(--hero-steel); stroke-width: 3; }
+.torch-body { stroke: var(--hero-mut); stroke-width: 11; stroke-linecap: round; }
+.torch-tip { stroke: var(--hero-steel); stroke-width: 5; stroke-linecap: round; }
+.spk { stroke: var(--spark); stroke-width: 3; stroke-linecap: round; transform-origin: 360px 215px; }
+.core { fill: #FFF6E5; }
+.dim { stroke: var(--hero-line); stroke-width: 1.5; }
+.dim-t { fill: var(--hero-mut); font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; }
+@media (prefers-reduced-motion: no-preference) {
+  .spk { animation: flick 1.4s ease-in-out infinite; }
+  .spk:nth-child(2n) { animation-delay: .35s; }
+  .spk:nth-child(3n) { animation-delay: .7s; }
+  .glow { animation: pulse 2.4s ease-in-out infinite; transform-origin: 360px 215px; }
+  @keyframes flick { 0%, 100% { opacity: .25; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.12); } }
+  @keyframes pulse { 0%, 100% { opacity: .75; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.06); } }
+}
+
+/* Segments */
+.segments { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.seg { padding: 1.6rem 0; border-bottom: 1px solid var(--line); display: grid; gap: .6rem; }
+.seg h3 { text-transform: uppercase; font-size: 2rem; }
+.seg p { color: var(--muted); max-width: 40ch; }
+@media (min-width: 820px) {
+  .segments { grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+  .seg { padding: 1.8rem 1.8rem 1.8rem 0; border-bottom: 0; }
+  .seg + .seg { padding-left: 1.8rem; border-left: 1px solid var(--line); }
+}
+
+/* Category tiles on home */
+.cats { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr)); }
+.cat {
+  display: grid; gap: .8rem; align-content: start; padding: 1.4rem; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; transition: border-color .15s ease, transform .15s ease;
+}
+.cat:hover { border-color: var(--accent); transform: translateY(-3px); }
+.cat p { color: var(--muted); font-size: .95rem; }
+.cat .more { color: var(--accent); font-weight: 600; font-size: .92rem; }
+.ico { width: 3rem; height: 3rem; border-radius: 8px; background: var(--surface2); display: grid; place-items: center; color: var(--accent); }
+.ico svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Process */
+.process { background: var(--surface); border-block: 1px solid var(--line); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.step { position: relative; padding: 0 0 1.8rem 2.6rem; border-left: 2px solid var(--line); margin-left: .6rem; }
+.step:last-child { padding-bottom: 0; border-left-color: transparent; }
+.step::before {
+  content: ""; position: absolute; left: -.6rem; top: .2rem; width: 1rem; height: 1rem; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--accent);
+}
+.step .mono { color: var(--accent); }
+.step h3 { font-size: 1.6rem; text-transform: uppercase; margin: .2rem 0 .3rem; }
+.step p { color: var(--muted); max-width: 44ch; }
+@media (min-width: 900px) {
+  .steps { grid-template-columns: repeat(5, 1fr); gap: 1.4rem; }
+  .step { padding: 2.2rem 0 0; border-left: 0; margin-left: 0; border-top: 2px solid var(--line); }
+  .step:last-child { border-top-color: var(--line); }
+  .step::before { left: 0; top: -.55rem; }
+}
+
+/* Commitments */
+.commit { display: grid; gap: 0; grid-template-columns: 1fr; border-top: 1px solid var(--line); }
+.commit div { padding: 1.5rem 0; border-bottom: 1px solid var(--line); display: grid; gap: .4rem; }
+.commit p { color: var(--muted); max-width: 52ch; }
+@media (min-width: 760px) {
+  .commit { grid-template-columns: 1fr 1fr; column-gap: 3rem; }
+}
+
+/* CTA band */
+.cta { background: var(--accent); color: var(--on-accent); }
+.cta-in { display: grid; gap: 1.4rem; padding-block: clamp(2.5rem, 6vw, 4rem); align-items: center; }
+@media (min-width: 820px) { .cta-in { grid-template-columns: 1fr auto; } }
+.cta h2 { font-size: clamp(2rem, 5vw, 3.4rem); }
+.cta p { max-width: 50ch; margin-top: .6rem; opacity: .92; }
+.cta .btn { background: var(--on-accent); color: var(--accent); }
+
+/* Page header (menu, order) */
+.page-head { padding-block: clamp(2.2rem, 5vw, 3.8rem) 1.6rem; display: grid; gap: .9rem; }
+.page-head h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); text-transform: uppercase; line-height: .95; }
+
+/* Menu */
+.filters { display: flex; flex-wrap: wrap; gap: .5rem; padding-bottom: 1.8rem; }
+.filters button {
+  min-height: 2.6rem; padding: .4rem 1rem; border-radius: 999px; border: 1.5px solid var(--line);
+  background: var(--surface); cursor: pointer; font-weight: 600; font-size: .92rem;
+}
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); padding-bottom: clamp(3rem, 6vw, 5rem); }
+.card { display: flex; flex-direction: column; gap: .9rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.card-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.card-top .mono { color: var(--muted); text-align: right; }
+.card h3 { font-size: 1.75rem; text-transform: uppercase; }
+.card > p { color: var(--muted); font-size: .97rem; }
+.scope { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; font-size: .93rem; }
+.scope li { position: relative; padding-left: 1.1rem; }
+.scope li::before { content: ""; position: absolute; left: 0; top: .6em; width: .45rem; height: .45rem; background: var(--accent); }
+.card .btn { margin-top: auto; }
+.card .actions { margin-top: auto; padding-top: .4rem; }
+
+/* Order */
+.order { display: grid; gap: 2rem; padding-bottom: clamp(3rem, 6vw, 5rem); }
+@media (min-width: 960px) { .order { grid-template-columns: 1.25fr .75fr; align-items: start; } }
+.form { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: clamp(1.2rem, 3vw, 2rem); display: grid; gap: 1.2rem; min-width: 0; }
+.row { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+.field { display: grid; gap: .4rem; min-width: 0; }
+.field label, .field legend { font-weight: 600; font-size: .92rem; }
+fieldset.field { border: 0; padding: 0; margin: 0; }
+.field input[type="text"], .field select, .field textarea {
+  width: 100%; min-height: 3rem; padding: .65rem .8rem; border-radius: 6px; border: 1.5px solid var(--line);
+  background: var(--bg); font-size: 1rem;
+}
+.field textarea { min-height: 6.5rem; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent); border-color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .3rem; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.chip span {
+  display: inline-flex; align-items: center; min-height: 2.5rem; padding: .35rem .9rem; border-radius: 999px;
+  border: 1.5px solid var(--line); background: var(--bg); font-size: .92rem; font-weight: 500;
+}
+.chip input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.chip input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.err { color: var(--accent); font-weight: 600; font-size: .92rem; min-height: 1.4em; }
+.preview-box { background: var(--bg); border: 1px dashed var(--line); border-radius: 8px; padding: 1rem; }
+.preview-box pre { margin: .5rem 0 0; white-space: pre-wrap; word-break: break-word; font-family: var(--font-body); font-size: .92rem; color: var(--muted); }
+.side { display: grid; gap: 1rem; min-width: 0; }
+.side-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.4rem; display: grid; gap: .7rem; }
+.side-card h3 { text-transform: uppercase; font-size: 1.5rem; }
+.side-card ul { margin: 0; padding-left: 1.1rem; color: var(--muted); display: grid; gap: .3rem; font-size: .95rem; }
+.num { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.num b { font-family: var(--font-mono); font-size: 1.15rem; letter-spacing: .02em; font-weight: 500; user-select: all; }
+.ok { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.3em; }
+
+/* Footer */
+.foot { background: var(--hero-bg); color: var(--hero-fg); }
+.foot-in { display: grid; gap: 2rem; padding-block: clamp(2.2rem, 5vw, 3.4rem) 2rem; }
+@media (min-width: 820px) { .foot-in { grid-template-columns: 1.3fr 1fr 1fr; } }
+.foot h4 { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--spark); margin-bottom: .7rem; font-weight: 500; }
+.foot p, .foot li { color: var(--hero-mut); font-size: .95rem; }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.foot a { text-decoration: none; }
+.foot a:hover { color: var(--hero-fg); text-decoration: underline; }
+.foot .brand b { color: var(--hero-fg); }
+.foot .brand small { color: var(--hero-mut); }
+.copy { border-top: 1px solid color-mix(in srgb, var(--hero-line) 55%, transparent); padding-block: 1rem; color: var(--hero-mut); font-size: .85rem; }
+
+
+/* Profil & pemilik */
+.profile-grid { display: grid; gap: 2rem; }
+@media (min-width: 900px) { .profile-grid { grid-template-columns: .85fr 1.15fr; align-items: start; } }
+.owner-card { display: grid; gap: 1.1rem; justify-items: start; padding: clamp(1.4rem, 3vw, 2rem); background: var(--hero-bg); color: var(--hero-fg); border-radius: 12px; }
+.owner-card .big { width: 7.5rem; height: 7.5rem; border-radius: 50%; display: block; }
+.owner-card h3 { font-size: clamp(2.2rem, 5vw, 3rem); text-transform: uppercase; }
+.owner-card .mono { color: var(--spark); }
+.owner-card p { color: var(--hero-mut); max-width: 34ch; }
+.facts { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.facts div { display: grid; gap: .15rem; padding: .85rem 0; border-bottom: 1px solid var(--line); }
+@media (min-width: 560px) { .facts div { grid-template-columns: 11rem 1fr; gap: 1.2rem; } }
+.facts dt { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: .25rem; }
+.facts dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }
+.facts .nib { font-family: var(--font-mono); letter-spacing: .04em; }
+
+/* Teaser & dokumentasi */
+.teaser { display: grid; gap: 1.8rem; align-items: center; }
+@media (min-width: 820px) { .teaser { grid-template-columns: 1fr 1fr; } }
+.teaser img { width: 100%; max-height: 26rem; object-fit: cover; border-radius: 10px; display: block; }
+.teaser .txt { display: grid; gap: 1rem; justify-items: start; }
+.doc-video { display: grid; gap: 2rem; padding-bottom: clamp(2rem, 5vw, 3.5rem); align-items: start; }
+@media (min-width: 860px) { .doc-video { grid-template-columns: minmax(0, 22rem) 1fr; gap: 3rem; } }
+.vid { margin: 0; background: #000; border-radius: 12px; overflow: hidden; }
+.vid video { display: block; width: 100%; height: auto; max-height: 44rem; background: #000; }
+.doc-text { display: grid; gap: 1.1rem; justify-items: start; }
+.gallery { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); padding-bottom: clamp(3rem, 6vw, 5rem); }
+.gallery figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.gallery img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+.gallery figcaption { padding: .9rem 1rem 1.1rem; font-size: .93rem; color: var(--muted); }
+.gallery figcaption b { display: block; color: var(--ink); font-weight: 600; margin-bottom: .15rem; }
+.sub-h { margin-bottom: 1.4rem; }
+
+/* Floating WhatsApp */
+.fab {
+  position: fixed; z-index: 25; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  display: inline-flex; align-items: center; gap: .55rem; min-height: 3.4rem; padding: .6rem 1.1rem .6rem .9rem; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none;
+  box-shadow: 0 6px 22px color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.fab svg { width: 1.6rem; height: 1.6rem; }
+.fab[hidden] { display: none !important; }
+@media (max-width: 420px) { .fab span { display: none; } .fab { padding: .8rem; } }
+
+/* ===== Tampilan baru: penuh warna, tetap formal ===== */
+:root {
+  --bg: #E8EEF9; --surface: #FFFFFF; --surface2: #E9EEF8; --ink: #0E1A33; --muted: #46526B; --line: #CBD5E8;
+  --bar: #FFFFFF; --accent: #C2185B; --on-accent: #FFFFFF; --spark: #FFB020; --steel: #1B3A6B;
+  --hero-bg: #0E2347; --hero-fg: #F5F7FC; --hero-mut: #C9D3EA; --hero-line: #5E7BB0; --hero-steel: #DCE5F7;
+  --teal: #0F8B8D; --blue: #2563EB; --amber: #F59E0B;
+  --tA1:#DCEAFF; --tA2:#F3E4F7; --tB1:#FFF1DC; --tB2:#FFE3EE; --tC1:#D9F2EF; --tC2:#E2EAFF;
+  --tD1:#FFF6DD; --tD2:#FFE1EA; --tE1:#E1ECFF; --tE2:#EBE4FF;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0A1124; --surface:#131C36; --surface2:#1C2848; --ink:#EEF2FB; --muted:#A9B6D3; --line:#2B3A60; --bar:#0E1730;
+    --accent:#FF6FA5; --on-accent:#2A0716; --spark:#FFC24D; --steel:#8FB0E8; --hero-bg:#070D1E;
+    --tA1:#0F1A38; --tA2:#1C1233; --tB1:#1A1630; --tB2:#2A1230; --tC1:#0C2230; --tC2:#12193A;
+    --tD1:#1F1A2E; --tD2:#2B1230; --tE1:#0F1A38; --tE2:#1B1438;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0A1124; --surface:#131C36; --surface2:#1C2848; --ink:#EEF2FB; --muted:#A9B6D3; --line:#2B3A60; --bar:#0E1730;
+  --accent:#FF6FA5; --on-accent:#2A0716; --spark:#FFC24D; --steel:#8FB0E8; --hero-bg:#070D1E;
+  --tA1:#0F1A38; --tA2:#1C1233; --tB1:#1A1630; --tB2:#2A1230; --tC1:#0C2230; --tC2:#12193A;
+  --tD1:#1F1A2E; --tD2:#2B1230; --tE1:#0F1A38; --tE2:#1B1438;
+}
+body {
+  background:
+    radial-gradient(900px 520px at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 65%),
+    radial-gradient(900px 560px at 100% 18%, color-mix(in srgb, var(--blue) 18%, transparent), transparent 65%),
+    radial-gradient(900px 600px at 0% 62%, color-mix(in srgb, var(--amber) 14%, transparent), transparent 65%),
+    var(--bg);
+}
+.bar { background: color-mix(in srgb, var(--bar) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 0; box-shadow: 0 2px 18px rgba(14,35,71,.12); }
+.bar::after { content:""; display:block; height:3px; background: linear-gradient(90deg, var(--accent), var(--amber), var(--teal), var(--blue)); }
+.brand .logo { width: 3.1rem; height: 3.1rem; box-shadow: 0 0 0 2px #fff, 0 3px 10px rgba(14,35,71,.35); background:#fff; }
+.hero { background: linear-gradient(118deg, #0E2347 0%, #26307F 52%, #9B1B63 100%); }
+.hero::before { background: radial-gradient(circle at 82% 40%, rgba(255,176,32,.30), transparent 52%), radial-gradient(circle at 8% 100%, rgba(15,139,141,.35), transparent 50%); }
+.hero h1 em { color: var(--spark); }
+.hero .btn-primary { background: var(--spark); color:#1A0D05; }
+.collage { position: relative; max-width: 30rem; margin-inline: auto; aspect-ratio: 1 / 1.06; }
+.collage figure, .collage .c-logo { margin: 0; position: absolute; overflow: hidden; border: 4px solid #fff; box-shadow: 0 14px 34px rgba(0,0,0,.38); }
+.collage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.c-main { inset: 0 16% 12% 0; border-radius: 22px; }
+.c-main img { object-position: 28% 55%; }
+.c-a { right: 0; top: 7%; width: 40%; aspect-ratio: 1; border-radius: 50%; }
+.c-b { right: 3%; bottom: 0; width: 46%; aspect-ratio: 4 / 3; border-radius: 16px; }
+.collage .c-logo { left: 2%; bottom: 0; width: 28%; height: auto; aspect-ratio: 1; border-radius: 50%; background:#fff; object-fit: contain; border-width: 3px; }
+.c-tag { position:absolute; left: 4%; top: 4%; background: var(--spark); color:#1A0D05; padding:.35rem .8rem; border-radius:999px; font-weight:700; font-size:.78rem; letter-spacing:.06em; box-shadow:0 6px 16px rgba(0,0,0,.3); }
+
+.tint-a { background: linear-gradient(135deg, var(--tA1), var(--tA2)); }
+.tint-b { background: linear-gradient(135deg, var(--tB1), var(--tB2)); }
+.tint-c { background: linear-gradient(135deg, var(--tC1), var(--tC2)); }
+.tint-d { background: linear-gradient(135deg, var(--tD1), var(--tD2)); border-block: 0; }
+.tint-e { background: linear-gradient(135deg, var(--tE1), var(--tE2)); }
+.process.tint-d { background: linear-gradient(135deg, var(--tD1), var(--tD2)); }
+.section-head h2 { background: linear-gradient(90deg, var(--ink), var(--steel)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .section-head h2 { background: none; color: var(--ink); } }
+:root[data-theme="dark"] .section-head h2 { background: none; color: var(--ink); }
+.eyebrow { color: var(--accent); }
+
+.cta { background: linear-gradient(110deg, #C2185B, #8E1A7A 55%, #2F3FB0); color:#fff; }
+.cta .btn { background:#fff; color:#8E1A7A; }
+.foot { background: linear-gradient(120deg, #0B1B3A, #1C2468 60%, #5A1450); }
+
+.page-head { margin-top: 1.2rem; padding: clamp(1.8rem,4vw,3rem) clamp(1.2rem,4vw,2.6rem); border-radius: 18px; color:#fff;
+  background: linear-gradient(118deg, #0E2347, #2C3A9A 58%, #A3185E); position: relative; overflow: hidden; margin-bottom: 1.6rem; }
+.page-head::after { content:""; position:absolute; right:-60px; top:-60px; width:240px; height:240px; border-radius:50%; background: radial-gradient(circle, rgba(255,176,32,.5), transparent 70%); }
+.page-head .eyebrow { color: var(--spark); }
+.page-head h1 { color:#fff; }
+.page-head .lead { color:#D9E1F4; }
+.page-head > * { position: relative; z-index: 1; }
+
+/* Kartu layanan & tile berfoto */
+.card, .cat { border: 1px solid var(--line); border-top: 4px solid var(--c, var(--accent)); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 28px rgba(20,35,90,.09); }
+[data-g="bangun"] { --c: #C2185B; } [data-g="rehab"] { --c: #0F8B8D; } [data-g="alu"] { --c: #2563EB; } [data-g="las"] { --c: #F59E0B; }
+.thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface2); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+.card:hover .thumb img, .cat:hover .thumb img { transform: scale(1.06); }
+.card .thumb { margin: -1.5rem -1.5rem .2rem; }
+.cat .thumb { margin: -1.4rem -1.4rem .2rem; }
+.thumb .tag { position:absolute; left:.7rem; bottom:.7rem; background: rgba(10,18,40,.8); color:#fff; padding:.22rem .65rem; border-radius:999px; font-size:.64rem; }
+.thumb .tag.ilus { left:auto; right:.7rem; background: rgba(255,255,255,.85); color:#0E1A33; }
+.card .scope li::before, .scope li::before { background: var(--c, var(--accent)); }
+.cat .more { color: var(--c, var(--accent)); }
+.filters button[aria-pressed="true"] { background: linear-gradient(90deg, var(--accent), #5B2BB0); color:#fff; border-color: transparent; }
+
+/* Video */
+.vgrid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr)); }
+.vcard { position: relative; display:block; width:100%; padding:0; border:0; cursor:pointer; aspect-ratio: 9 / 14; border-radius: 14px; overflow:hidden; background:#0A1124; color:#fff; text-align:left; box-shadow: 0 10px 26px rgba(20,35,90,.2); transition: transform .2s ease; }
+.vcard:hover { transform: translateY(-4px); }
+.vcard img { width:100%; height:100%; object-fit:cover; display:block; }
+.vcard::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, transparent 45%, rgba(8,12,30,.92)); pointer-events:none; }
+.vcard .play { position:absolute; z-index:2; left:50%; top:42%; width:3.4rem; height:3.4rem; margin:-1.7rem 0 0 -1.7rem; border-radius:50%; background: var(--accent); display:grid; place-items:center; box-shadow:0 6px 18px rgba(0,0,0,.4); }
+.vcard .play svg { width:1.4rem; height:1.4rem; fill:#fff; margin-left:.15rem; }
+.vcard .meta { position:absolute; z-index:2; left:0; right:0; bottom:0; padding:.8rem .9rem; display:grid; gap:.15rem; }
+.vcard .meta b { font-weight:600; font-size:.95rem; line-height:1.25; }
+.vcard .meta span { font-family: var(--font-mono); font-size:.68rem; letter-spacing:.1em; opacity:.85; }
+dialog#vdlg { padding:0; border:0; border-radius:16px; background:#000; width:min(94vw, 26rem); max-height:94vh; overflow:hidden; color:#fff; }
+dialog#vdlg::backdrop { background: rgba(5,10,28,.78); backdrop-filter: blur(4px); }
+dialog#vdlg video { display:block; width:100%; max-height:78vh; background:#000; }
+dialog#vdlg p { margin:0; padding:.8rem 1rem; font-weight:600; }
+dialog#vdlg .x { position:absolute; z-index:3; right:.6rem; top:.6rem; width:2.4rem; height:2.4rem; border-radius:50%; border:0; background:rgba(0,0,0,.65); color:#fff; font-size:1.4rem; line-height:1; cursor:pointer; }
+.more-row { margin-top: 1.6rem; }
+@media (max-width: 420px) { .brand b { font-size: 1.3rem; white-space: nowrap; } .brand small { font-size: .55rem; letter-spacing: .08em; } .brand { gap: .55rem; } }
+.owner-card { background: linear-gradient(135deg, #0E2347, #3A2A8A 60%, #A3185E); }
+.gallery figure { box-shadow: 0 10px 26px rgba(20,35,90,.1); }
+.gallery img { aspect-ratio: 3 / 4; }
+.form, .side-card { box-shadow: 0 10px 28px rgba(20,35,90,.08); border-radius: 14px; }
+</style>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="#beranda" aria-label="Anugrah Las, ke Beranda">
+      <img class="logo" src="media/logo.png" alt="Logo Anugrah Las Banjar" width="44" height="44">
+      <span><b>Anugrah Las</b><small>Banjar &middot; Sejak 2003</small></span>
+    </a>
+    <nav class="tabs" aria-label="Menu utama">
+      <a href="#beranda" data-route="beranda">Beranda</a>
+      <a href="#layanan" data-route="layanan">Menu Layanan</a>
+      <a href="#dokumentasi" data-route="dokumentasi">Dokumentasi</a>
+      <a href="#pesan" data-route="pesan">Order</a>
+    </nav>
+    <a class="btn btn-primary btn-sm wa-link" href="https://wa.me/6282321090452?text=Halo%20Anugrah%20Las%2C%20saya%20ingin%20berkonsultasi%20tentang%20proyek%20saya." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>
+      <span class="long">Hubungi via WhatsApp</span><span class="short">WhatsApp</span>
+    </a>
+  </div>
+</header>
+
+<main>
+<!-- ===================== BERANDA ===================== -->
+<section id="view-beranda" data-view="beranda">
+  <div class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-text">
+        <span class="mono eyebrow">Sejak 2003 &middot; Sipil &middot; Pemerintah &middot; BUMN</span>
+        <h1>Kokoh di <em>struktur,</em> hangat di pelayanan.</h1>
+        <p class="lead">Anugrah Las menangani pembangunan rumah, kantor, dan rumah sakit, rehabilitasi rumah, pekerjaan aluminium, baja ringan, serta las. Kami bekerja rapi, terbuka soal biaya, dan senang mendampingi Anda dari konsultasi sampai serah terima.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#pesan">Order via WhatsApp</a>
+          <a class="btn btn-ghost" href="#layanan">Lihat Menu Layanan</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="collage">
+          <figure class="c-main"><img src="media/kerja-5.jpg" alt="Tukang las memotong rangka besi dengan gerinda di workshop Anugrah Las Banjar"></figure>
+          <figure class="c-a"><img src="media/svc/las.jpg" alt="Pengerjaan las di workshop"></figure>
+          <figure class="c-b"><img src="media/svc/kusen.jpg" alt="Kusen aluminium diangkut ke lokasi"></figure>
+          <img class="c-logo" src="media/logo.png" alt="Logo ALB Anugrah Las Banjar">
+          <span class="c-tag">SEJAK 2003</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section tint-a">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono eyebrow">Siapa yang kami layani</span>
+        <h2>Tiga jenis klien, satu standar kerja</h2>
+        <p class="lead">Rumah keluarga, gedung instansi, atau proyek BUMN, kami memperlakukan setiap pekerjaan dengan ketelitian yang sama dan komunikasi yang sama terbukanya.</p>
+      </div>
+      <div class="segments">
+        <div class="seg">
+          <span class="mono eyebrow">Sipil</span>
+          <h3>Perorangan &amp; swasta</h3>
+          <p>Bangun atau rehab rumah, pasang kusen dan pintu aluminium, rangka atap baja ringan, hingga pagar dan kanopi. Kami jelaskan setiap pilihan dengan bahasa yang mudah dipahami.</p>
+        </div>
+        <div class="seg">
+          <span class="mono eyebrow">Pemerintah</span>
+          <h3>Instansi &amp; dinas</h3>
+          <p>Kantor dan fasilitas pelayanan publik. Kami siap menyiapkan penawaran terperinci, jadwal kerja, laporan kemajuan, dan dokumentasi pekerjaan.</p>
+        </div>
+        <div class="seg">
+          <span class="mono eyebrow">BUMN</span>
+          <h3>BUMN &amp; korporasi</h3>
+          <p>Pekerjaan konstruksi dan fabrikasi las dengan disiplin jadwal, perhatian pada keselamatan kerja, dan koordinasi yang tertib dengan tim proyek Anda.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section tint-b">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono eyebrow">Menu layanan</span>
+        <h2>Yang bisa kami kerjakan</h2>
+        <p class="lead">Dari pondasi sampai sambungan las terakhir. Pilih kelompok layanan untuk melihat rincian pekerjaannya.</p>
+      </div>
+      <div class="cats" id="cats"></div>
+    </div>
+  </div>
+
+  <div class="section tint-c">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono eyebrow">Profil usaha</span>
+        <h2>Dikelola langsung oleh pemiliknya</h2>
+        <p class="lead">Anugrah Las Banjar berdiri sejak 7 Januari 2003. Setiap pekerjaan diawasi langsung oleh pemilik, sehingga Anda berbicara dengan orang yang memegang keputusan.</p>
+      </div>
+      <div class="profile-grid">
+        <div class="owner-card">
+          <img class="big" src="media/logo.png" alt="Logo ALB Anugrah Las Banjar" width="120" height="120">
+          <span class="mono">Owner</span>
+          <h3>Denden Dariman</h3>
+          <p>Kepercayaan adalah misi kami untuk mewujudkan solusi impian Anda.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Nama usaha</dt><dd>Bengkel Las Anugrah Banjar</dd></div>
+          <div><dt>Jenis usaha</dt><dd>Jasa konstruksi dan pengelasan besi/aluminium</dd></div>
+          <div><dt>Bentuk usaha</dt><dd>Perseorangan (pribadi)</dd></div>
+          <div><dt>Berdiri</dt><dd>7 Januari 2003</dd></div>
+          <div><dt>Nomor izin usaha</dt><dd class="nib">0305240057701</dd></div>
+          <div><dt>Alamat workshop</dt><dd>Jl. Pejuang, Perum Balokang Blok D, RT 47 RW 15, Desa Balokang, Kec. Banjar</dd></div>
+          <div><dt>Pemilik</dt><dd>Denden Dariman</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="section tint-a">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono eyebrow">Dokumentasi</span>
+        <h2>Lihat sendiri cara kami bekerja</h2>
+        <p class="lead">Cuplikan video dari workshop kami. Ketuk video untuk memutarnya, dan nilai kerapian serta cara kerja tim sebelum memutuskan.</p>
+      </div>
+      <div class="vgrid" id="vhome"></div>
+      <div class="more-row"><a class="btn btn-primary" href="#dokumentasi">Lihat semua video &amp; foto</a></div>
+    </div>
+  </div>
+
+  <div class="section process tint-d">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono eyebrow">Cara kerja</span>
+        <h2>Lima tahap, tanpa kejutan</h2>
+        <p class="lead">Urutan kerja kami sederhana agar Anda selalu tahu posisi proyek dan apa yang terjadi berikutnya.</p>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="mono">Tahap 1</span><h3>Konsultasi</h3><p>Ceritakan kebutuhan Anda lewat WhatsApp. Kami dengarkan dulu, baru menyarankan.</p></li>
+        <li class="step"><span class="mono">Tahap 2</span><h3>Survei lokasi</h3><p>Tim kami melihat kondisi lapangan dan mengukur langsung agar hitungan akurat.</p></li>
+        <li class="step"><span class="mono">Tahap 3</span><h3>Penawaran &amp; RAB</h3><p>Rincian biaya dan jadwal disusun jelas, supaya mudah Anda bandingkan dan setujui.</p></li>
+        <li class="step"><span class="mono">Tahap 4</span><h3>Pengerjaan</h3><p>Dikerjakan sesuai kesepakatan, dengan kabar kemajuan dan perhatian pada keselamatan kerja.</p></li>
+        <li class="step"><span class="mono">Tahap 5</span><h3>Serah terima</h3><p>Pekerjaan diperiksa bersama. Catatan perbaikan kami tuntaskan sebelum selesai.</p></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="section tint-e">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono eyebrow">Komitmen kami</span>
+        <h2>Cara kami menjaga kepercayaan</h2>
+      </div>
+      <div class="commit">
+        <div><h3>Rapi dan sesuai spesifikasi</h3><p>Material dan metode kerja mengikuti spesifikasi yang disepakati. Sambungan las, ukuran, dan finishing kami periksa sebelum diserahkan.</p></div>
+        <div><h3>Biaya yang terbuka</h3><p>Penawaran dirinci per pekerjaan. Bila ada perubahan di lapangan, kami bicarakan dulu sebelum dikerjakan.</p></div>
+        <div><h3>Keselamatan kerja</h3><p>Pekerjaan las dan ketinggian punya risiko. Karena itu pengamanan area dan alat pelindung diri kami anggap bagian dari pekerjaan, bukan tambahan.</p></div>
+        <div><h3>Mudah dihubungi</h3><p>Satu nomor WhatsApp untuk bertanya, mengirim foto lokasi, atau meminta kabar proyek. Kami berusaha membalas secepatnya.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="wrap cta-in">
+      <div>
+        <h2>Punya rencana? Mari kita bicarakan.</h2>
+        <p>Kirim foto lokasi atau gambar kerja Anda. Kami bantu menerjemahkannya menjadi rencana kerja dan penawaran yang jelas.</p>
+      </div>
+      <a class="btn" href="#pesan">Isi form order</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MENU LAYANAN ===================== -->
+<section id="view-layanan" data-view="layanan" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <span class="mono eyebrow">Menu layanan</span>
+      <h1>Pilih pekerjaan Anda</h1>
+      <p class="lead">Delapan layanan dalam empat kelompok. Tekan &ldquo;Pesan layanan ini&rdquo; dan kami siapkan pesan WhatsApp-nya untuk Anda.</p>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Filter kelompok layanan"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ===================== DOKUMENTASI ===================== -->
+<section id="view-dokumentasi" data-view="dokumentasi" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <span class="mono eyebrow">Dokumentasi</span>
+      <h1>Lihat cara kami bekerja</h1>
+      <p class="lead">Video dan foto dari workshop Anugrah Las Banjar. Beginilah rangka, pagar, tangga, dan sambungan las kami dikerjakan sebelum sampai ke lokasi Anda.</p>
+    </div>
+    <div class="doc-video">
+      <figure class="vid">
+        <video controls playsinline preload="metadata" poster="media/poster/v0002.jpg">
+          <source src="media/video/v0002.mp4" type="video/mp4">
+          Peramban Anda belum mendukung pemutaran video.
+        </video>
+      </figure>
+      <div class="doc-text">
+        <h2>Selamat datang di Anugrah Las Banjar</h2>
+        <p class="lead">Perkenalan singkat usaha kami. Di bawah ini ada belasan video pengerjaan pagar, pintu, rangka baja, dan las langsung di workshop Banjar. Calon klien dipersilakan melihat dan bertanya tentang pekerjaan yang serupa dengan kebutuhannya.</p>
+        <ul class="scope">
+          <li>Pagar, railing, dan pintu besi</li>
+          <li>Rangka baja dan konstruksi bangunan</li>
+          <li>Kusen dan pintu aluminium</li>
+        </ul>
+        <a class="btn btn-primary" href="#pesan">Tanya proyek serupa</a>
+      </div>
+    </div>
+    <h2 class="sub-h">Video pekerjaan</h2>
+    <div class="vgrid" id="vgrid" style="padding-bottom:clamp(2rem,5vw,3.5rem)"></div>
+    <h2 class="sub-h">Riwayat pekerjaan</h2>
+    <div class="gallery">
+      <figure><img src="media/kerja-5.jpg" alt="Pekerja memotong rangka besi dengan gerinda"><figcaption><b>Memotong rangka besi</b>Pemotongan besi hollow dengan gerinda sebelum dirakit.</figcaption></figure>
+      <figure><img src="media/kerja-1.jpg" alt="Rangka baja besar berwarna biru di dalam workshop"><figcaption><b>Rangka baja besar</b>Dirakit dan dicat di workshop sebelum dikirim.</figcaption></figure>
+      <figure><img src="media/kerja-2.jpg" alt="Tangga besi dan rangka biru yang sedang dikerjakan"><figcaption><b>Tangga dan rangka besi</b>Pengerjaan komponen dengan sambungan las.</figcaption></figure>
+      <figure><img src="media/kerja-3.jpg" alt="Pekerja mengelas pagar besi"><figcaption><b>Pagar besi</b>Pengelasan rangka pagar sebelum finishing.</figcaption></figure>
+      <figure><img src="media/kerja-4.jpg" alt="Pekerja mengelas bagian bawah kendaraan"><figcaption><b>Las pada kendaraan</b>Perbaikan rangka dan bodi kendaraan.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ORDER ===================== -->
+<section id="view-pesan" data-view="pesan" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <span class="mono eyebrow">Order via WhatsApp</span>
+      <h1>Ceritakan proyek Anda</h1>
+      <p class="lead">Isi data singkat di bawah. Kami susun menjadi pesan WhatsApp yang rapi, lalu Anda tinggal menekan kirim.</p>
+    </div>
+    <div class="order">
+      <form class="form" id="form" novalidate>
+        <div class="row">
+          <div class="field"><label for="f-nama">Nama / instansi</label><input type="text" id="f-nama" autocomplete="name" placeholder="Contoh: Bapak Slamet"></div>
+          <div class="field">
+            <label for="f-klien">Jenis klien</label>
+            <select id="f-klien">
+              <option>Perorangan / swasta</option>
+              <option>Instansi pemerintah</option>
+              <option>BUMN / BUMD</option>
+            </select>
+          </div>
+        </div>
+        <fieldset class="field">
+          <legend>Layanan yang dibutuhkan</legend>
+          <div class="chips" id="chips"></div>
+        </fieldset>
+        <div class="row">
+          <div class="field"><label for="f-lokasi">Lokasi proyek</label><input type="text" id="f-lokasi" placeholder="Kota / kecamatan"></div>
+          <div class="field"><label for="f-ukuran">Perkiraan ukuran atau luas</label><input type="text" id="f-ukuran" placeholder="Contoh: rumah 7 x 12 m"></div>
+        </div>
+        <div class="field"><label for="f-catatan">Catatan tambahan</label><textarea id="f-catatan" placeholder="Target waktu, kondisi lokasi, atau hal lain yang perlu kami ketahui"></textarea></div>
+        <div class="preview-box">
+          <span class="mono" style="color:var(--muted)">Pesan yang akan dikirim</span>
+          <pre id="preview"></pre>
+        </div>
+        <div class="err" id="err" role="alert"></div>
+        <a class="btn btn-primary" id="send" href="https://wa.me/6282321090452" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>
+          Buka WhatsApp dengan pesan ini
+        </a>
+        <p style="color:var(--muted);font-size:.9rem">WhatsApp akan terbuka dengan pesan yang sudah terisi. Pesan baru terkirim setelah Anda menekan kirim di sana.</p>
+      </form>
+
+      <aside class="side">
+        <div class="side-card">
+          <span class="mono eyebrow">Nomor WhatsApp</span>
+          <div class="num"><b id="num">+62 823-2109-0452</b><button type="button" class="btn btn-line btn-sm" id="copy">Salin nomor</button></div>
+          <div class="ok" id="ok" aria-live="polite"></div>
+        </div>
+        <div class="side-card">
+          <h3>Agar penawaran cepat selesai</h3>
+          <ul>
+            <li>Foto kondisi lokasi dari beberapa sisi.</li>
+            <li>Gambar kerja, denah, atau sketsa bila sudah ada.</li>
+            <li>Ukuran perkiraan dan target waktu pengerjaan.</li>
+            <li>Untuk instansi dan BUMN, sebutkan nama paket atau nomor dokumen pengadaan bila ada.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <a class="brand" href="#beranda">
+        <img class="logo" src="media/logo.png" alt="Logo Anugrah Las Banjar" width="44" height="44">
+        <span><b>Anugrah Las</b><small>Banjar &middot; Sejak 2003</small></span>
+      </a>
+      <p style="margin-top:1rem;max-width:36ch">Mitra pembangunan untuk sipil, pemerintah, dan BUMN. Pemilik: Denden Dariman.</p>
+    </div>
+    <div>
+      <h4>Layanan</h4>
+      <ul>
+        <li>Pembangunan rumah, kantor, rumah sakit</li>
+        <li>Rehabilitasi rumah</li>
+        <li>Pintu &amp; kusen aluminium</li>
+        <li>Baja ringan</li>
+        <li>Jasa las / welding</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hubungi kami</h4>
+      <ul>
+        <li><a class="wa-link" href="https://wa.me/6282321090452?text=Halo%20Anugrah%20Las%2C%20saya%20ingin%20berkonsultasi%20tentang%20proyek%20saya." target="_blank" rel="noopener">WhatsApp +62 823-2109-0452</a></li>
+        <li>Jl. Pejuang, Perum Balokang Blok D, RT 47 RW 15, Desa Balokang, Kec. Banjar</li>
+        <li><a href="#layanan">Menu Layanan</a></li>
+        <li><a href="#dokumentasi">Dokumentasi</a></li>
+        <li><a href="#pesan">Form Order</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap copy">&copy; 2026 Anugrah Las. Seluruh hak dilindungi.</div>
+</footer>
+
+<a class="fab wa-link" id="fab" href="https://wa.me/6282321090452?text=Halo%20Anugrah%20Las%2C%20saya%20ingin%20berkonsultasi%20tentang%20proyek%20saya." target="_blank" rel="noopener" aria-label="Chat WhatsApp Anugrah Las">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>
+  <span>Chat WhatsApp</span>
+</a>
+
+<dialog id="vdlg" aria-label="Pemutar video"><button class="x" type="button" aria-label="Tutup video">&times;</button><video controls playsinline></video><p id="vcap"></p></dialog>
+
+<script>
+(function () {
+  var NUM = "6282321090452";
+  var ICONS = {
+    house: "M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6",
+    school: "M3 9l9-5 9 5-9 5-9-5zM7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5",
+    office: "M5 21V4h9v17M14 9h5v12M8 8h3M8 12h3M8 16h3M3 21h18",
+    hospital: "M4 21V6h16v15M12 9v6M9 12h6M9 21v-4h6v4",
+    rehab: "M14.5 6.5a4 4 0 0 0-5 5L3 18l3 3 6.5-6.5a4 4 0 0 0 5-5l-2.5 2.5-2-.5-.5-2z",
+    door: "M6 21V3h12v18M3 21h18M14.5 12h.01",
+    frame: "M4 4h16v16H4zM12 4v16M4 12h16",
+    roof: "M2 15L12 5l10 10M6 15h12M9 15l3-6 3 6",
+    weld: "M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"
+  };
+  function ico(n) { return '<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + ICONS[n] + '"/></svg></span>'; }
+
+  var GROUPS = [
+    { id: "bangun", img: "media/svc/rumah.jpg", nama: "Pembangunan", ikon: "house", ringkas: "Rumah, kantor, dan rumah sakit, dari pondasi sampai finishing." },
+    { id: "rehab", img: "media/svc/rehab.jpg", nama: "Rehabilitasi", ikon: "rehab", ringkas: "Memperbaiki dan menyegarkan kembali rumah yang sudah berumur atau rusak." },
+    { id: "alu", img: "media/svc/kusen.jpg", nama: "Aluminium & Baja Ringan", ikon: "frame", ringkas: "Pintu, kusen, dan rangka atap yang ringan, tahan lama, dan rapi." },
+    { id: "las", img: "media/svc/las.jpg", nama: "Las & Welding", ikon: "weld", ringkas: "Pagar, kanopi, tangga, dan rangka baja dengan sambungan las yang kuat." }
+  ];
+
+  var SERVICES = [
+    { id: "rumah", g: "bangun", img: "media/svc/rumah.jpg", ikon: "house", judul: "Pembangunan Rumah", desk: "Hunian baru yang nyaman dan kokoh, dikerjakan bertahap dengan komunikasi yang jelas.", lingkup: ["Pondasi, struktur, dan dinding", "Atap, plafon, dan lantai", "Instalasi listrik dan air", "Finishing dan serah terima"] },
+    { id: "kantor", g: "bangun", img: "media/svc/kantor.svg", ilus: true, ikon: "office", judul: "Pembangunan Kantor", desk: "Gedung kerja yang efisien, rapi, dan siap dipakai, untuk instansi maupun perusahaan.", lingkup: ["Struktur dan tata ruang", "Fasad, kusen, dan pintu", "Instalasi pendukung", "Penyelesaian sesuai jadwal"] },
+    { id: "rs", g: "bangun", img: "media/svc/rs.svg", ilus: true, ikon: "hospital", judul: "Pembangunan Rumah Sakit", desk: "Fasilitas kesehatan yang dikerjakan teliti bersama konsultan perencana dan standar teknis yang berlaku.", lingkup: ["Gedung klinik dan ruang perawatan", "Pekerjaan struktur dan arsitektur", "Koordinasi dengan tim perencana", "Dokumentasi pekerjaan"] },
+    { id: "rehab", g: "rehab", img: "media/svc/rehab.jpg", ikon: "rehab", judul: "Rehabilitasi Rumah", desk: "Rumah yang sudah lelah kami rawat kembali, mulai dari bagian yang rusak sampai tampilan yang segar.", lingkup: ["Perbaikan atap, dinding, dan lantai", "Penguatan struktur ringan", "Perbaikan kamar mandi dan sanitasi", "Pengecatan dan finishing"] },
+    { id: "pintu", g: "alu", img: "media/svc/pintu.jpg", ikon: "door", judul: "Pemasangan Pintu Aluminium", desk: "Pintu aluminium yang ringan, tahan karat, dan terpasang presisi sehingga mudah dibuka dan rapat.", lingkup: ["Pengukuran langsung di lokasi", "Pintu swing dan sliding", "Pemasangan engsel, kunci, dan kaca", "Pengecekan kerapatan"] },
+    { id: "kusen", g: "alu", img: "media/svc/kusen.jpg", ikon: "frame", judul: "Pemasangan Kusen Aluminium", desk: "Kusen jendela dan pintu yang lurus, kuat, dan hemat perawatan untuk rumah maupun gedung.", lingkup: ["Kusen jendela dan pintu", "Pemasangan lurus dan waterpass", "Penutup sambungan dengan sealant", "Pilihan warna dan profil"] },
+    { id: "baja", g: "alu", img: "media/svc/baja.jpg", ikon: "roof", judul: "Baja Ringan", desk: "Rangka atap baja ringan yang ringan, rapi, dan tidak dimakan rayap, dihitung sesuai bentang atap Anda.", lingkup: ["Rangka atap dan kuda-kuda", "Reng dan perkuatan", "Rangka plafon", "Pemasangan penutup atap"] },
+    { id: "las", g: "las", img: "media/svc/las.jpg", ikon: "weld", judul: "Jasa Las / Welding", desk: "Pekerjaan las untuk kebutuhan rumah hingga proyek, dengan sambungan bersih dan hasil akhir yang rapi.", lingkup: ["Pagar, kanopi, dan railing", "Tangga dan pintu besi", "Rangka dan konstruksi baja", "Perbaikan serta modifikasi las"] }
+  ];
+
+  function waURL(text) { return "https://wa.me/" + NUM + (text ? "?text=" + encodeURIComponent(text) : ""); }
+
+  /* Home: category tiles */
+  var cats = document.getElementById("cats");
+  GROUPS.forEach(function (g) {
+    var a = document.createElement("a");
+    a.className = "cat"; a.href = "#layanan"; a.dataset.g = g.id;
+    a.innerHTML = '<span class="thumb"><img src="' + g.img + '" alt="' + g.nama.replace("&", "&amp;") + '" loading="lazy"></span>' + "<h3>" + g.nama.replace("&", "&amp;").toUpperCase() + "</h3><p>" + g.ringkas + '</p><span class="more">Lihat rincian &rarr;</span>';
+    a.addEventListener("click", function () { setFilter(g.id); });
+    cats.appendChild(a);
+  });
+
+  /* Menu: filters + cards */
+  var filters = document.getElementById("filters");
+  var grid = document.getElementById("grid");
+  var current = "semua";
+  function makeFilter(id, label) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = label; b.dataset.f = id;
+    b.addEventListener("click", function () { setFilter(id); });
+    filters.appendChild(b);
+  }
+  makeFilter("semua", "Semua layanan");
+  GROUPS.forEach(function (g) { makeFilter(g.id, g.nama); });
+
+  function setFilter(id) {
+    current = id;
+    Array.prototype.forEach.call(filters.children, function (b) { b.setAttribute("aria-pressed", String(b.dataset.f === id)); });
+    renderGrid();
+  }
+  function groupName(id) { return GROUPS.filter(function (g) { return g.id === id; })[0].nama; }
+  function renderGrid() {
+    grid.innerHTML = "";
+    SERVICES.filter(function (s) { return current === "semua" || s.g === current; }).forEach(function (s) {
+      var d = document.createElement("article");
+      d.className = "card"; d.dataset.g = s.g;
+      d.innerHTML =
+        '<div class="thumb"><img src="' + s.img + '" alt="' + s.judul + '" loading="lazy"><span class="tag mono">' + groupName(s.g).replace("&", "&amp;") + "</span>" + (s.ilus ? '<span class="tag ilus mono">Ilustrasi</span>' : "") + "</div>" +
+        "<h3>" + s.judul + "</h3><p>" + s.desk + "</p>" +
+        '<ul class="scope">' + s.lingkup.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>" +
+        '<div class="actions"><button type="button" class="btn btn-primary btn-sm" data-s="' + s.id + '">Pesan layanan ini</button></div>';
+      d.querySelector("button").addEventListener("click", function () { pick(s.id); });
+      grid.appendChild(d);
+    });
+  }
+
+  /* Order form */
+  var chips = document.getElementById("chips");
+  SERVICES.forEach(function (s) {
+    var l = document.createElement("label");
+    l.className = "chip";
+    l.innerHTML = '<input type="checkbox" id="c-' + s.id + '" value="' + s.judul + '"><span>' + s.judul + "</span>";
+    chips.appendChild(l);
+  });
+  var el = function (i) { return document.getElementById(i); };
+  var send = el("send"), err = el("err"), preview = el("preview");
+
+  function chosen() {
+    return Array.prototype.map.call(chips.querySelectorAll("input:checked"), function (i) { return i.value; });
+  }
+  function build() {
+    var v = function (id) { return el(id).value.trim() || "-"; };
+    var lines = [
+      "Halo Anugrah Las, saya ingin berkonsultasi dan meminta penawaran.", "",
+      "Nama: " + v("f-nama"),
+      "Jenis klien: " + el("f-klien").value,
+      "Layanan: " + (chosen().join(", ") || "-"),
+      "Lokasi proyek: " + v("f-lokasi"),
+      "Perkiraan ukuran/luas: " + v("f-ukuran"),
+      "Catatan: " + v("f-catatan"), "",
+      "Terima kasih."
+    ];
+    return lines.join("\n");
+  }
+  function refresh() {
+    var m = build();
+    preview.textContent = m;
+    send.href = waURL(m);
+  }
+  el("form").addEventListener("input", function () { err.textContent = ""; refresh(); });
+  el("form").addEventListener("change", refresh);
+  el("form").addEventListener("submit", function (e) { e.preventDefault(); });
+  send.addEventListener("click", function (e) {
+    if (!el("f-nama").value.trim()) { e.preventDefault(); err.textContent = "Mohon isi nama atau instansi Anda terlebih dahulu."; el("f-nama").focus(); return; }
+    if (!chosen().length) { e.preventDefault(); err.textContent = "Pilih minimal satu layanan yang Anda butuhkan."; return; }
+  });
+  function pick(id) {
+    var c = el("c-" + id);
+    if (c) c.checked = true;
+    refresh();
+    go("pesan");
+  }
+  refresh();
+
+  /* Copy number */
+  el("copy").addEventListener("click", function () {
+    var ok = el("ok");
+    function fallback() {
+      try {
+        var r = document.createRange(); r.selectNodeContents(el("num"));
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      } catch (x) {}
+      ok.textContent = "Nomor terpilih, silakan salin.";
+    }
+    try {
+      navigator.clipboard.writeText("+6282321090452").then(function () { ok.textContent = "Nomor tersalin."; }, fallback);
+    } catch (x) { fallback(); }
+  });
+
+  /* Video */
+  var VIDEOS = [
+    ["0013", "Profil usaha dan layanan tersedia", 27], ["0030", "Pembuatan pintu besi", 60], ["0029", "Pengecatan rangka pagar biru", 35],
+    ["0028", "Memotong besi untuk rangka", 30], ["0027", "Layanan dan konsultasi di workshop", 33], ["0024", "Kenapa order di Anugrah Las", 33],
+    ["0019", "Rangka baja untuk bangunan cabin", 34], ["0016", "Pagar ornamen dan railing", 32], ["0015", "Rangka pintu dan panel besi", 33],
+    ["0018", "Pagar galvanis", 32], ["0017", "Rangka besi dan rak galvanis", 31], ["0026", "Finishing pagar", 26],
+    ["0025", "Merakit pagar di workshop", 21], ["0023", "Pengelasan rangka pagar", 14], ["0022", "Pengelasan rangka", 8],
+    ["0021", "Memotong besi dengan gerinda", 6], ["0020", "Jam layanan dan jenis pekerjaan", 24]
+  ];
+  function dur(n) { return n >= 60 ? "1:" + ("0" + (n - 60)).slice(-2) : "0:" + ("0" + n).slice(-2); }
+  var dlg = document.getElementById("vdlg"), dvid = dlg.querySelector("video"), dcap = document.getElementById("vcap");
+  function renderVideos(box, list) {
+    list.forEach(function (v) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "vcard";
+      b.setAttribute("aria-label", "Putar video: " + v[1]);
+      b.innerHTML = '<img src="media/poster/v' + v[0] + '.jpg" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></span><span class="meta"><b>' + v[1] + "</b><span>" + dur(v[2]) + "</span></span>";
+      b.addEventListener("click", function () {
+        dvid.src = "media/video/v" + v[0] + ".mp4"; dvid.poster = "media/poster/v" + v[0] + ".jpg";
+        dcap.textContent = v[1];
+        if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+        var p = dvid.play(); if (p && p.catch) p.catch(function () {});
+      });
+      box.appendChild(b);
+    });
+  }
+  renderVideos(document.getElementById("vgrid"), VIDEOS);
+  renderVideos(document.getElementById("vhome"), VIDEOS.slice(0, 4));
+  function closeV() { try { dvid.pause(); } catch (x) {} dvid.removeAttribute("src"); dvid.load(); if (dlg.close) dlg.close(); else dlg.removeAttribute("open"); }
+  dlg.querySelector(".x").addEventListener("click", closeV);
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) closeV(); });
+  dlg.addEventListener("close", function () { try { dvid.pause(); } catch (x) {} });
+
+  /* Routing on hash */
+
+  var ROUTES = ["beranda", "layanan", "dokumentasi", "pesan"];
+  var first = true;
+  function route(forced) {
+    var h = typeof forced === "string" ? forced : (location.hash || "").replace("#", "");
+    if (ROUTES.indexOf(h) < 0) h = "beranda";
+    Array.prototype.forEach.call(document.querySelectorAll("[data-view]"), function (s) { s.hidden = s.dataset.view !== h; });
+    Array.prototype.forEach.call(document.querySelectorAll(".tabs a"), function (a) {
+      if (a.dataset.route === h) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    el("fab").hidden = h === "pesan";
+    Array.prototype.forEach.call(document.querySelectorAll(".vid video"), function (v) { if (h !== "dokumentasi") v.pause(); });
+    if (h === "layanan" && !grid.children.length) setFilter(current);
+    if (!first) window.scrollTo(0, 0);
+    first = false;
+  }
+  function go(h) {
+    try { location.hash = h; } catch (x) {}
+    route(h);
+  }
+  window.addEventListener("hashchange", function () { route(); });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var h = a.getAttribute("href").slice(1);
+    if (ROUTES.indexOf(h) < 0) return;
+    e.preventDefault();
+    go(h);
+  });
+  setFilter("semua");
+  route();
+})();
+</script>
+
+</body></html>
