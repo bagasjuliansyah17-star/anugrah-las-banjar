@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bagasjuliansyah17-star.github.io/anugrah-las-banjar/sitemap.xml
